@@ -39,6 +39,20 @@ $(function(){
 
 
 	function check_user_name(){
+
+		$.get('/user/register_ajax/', function(data){
+			$.each(data.data,function(i,n){
+				if($('#user_name').val()==n){
+					$('#user_name').next().html('用户名已被注册')
+					$('#user_name').next().show();
+					error_name = true;
+				}
+				else{
+					$('#user_name').next().hide();
+					error_name = false;
+		
+
+
 		var len = $('#user_name').val().length;
 		if(len<5||len>20)
 		{
@@ -51,6 +65,10 @@ $(function(){
 			$('#user_name').next().hide();
 			error_name = false;
 		}
+			}
+			})
+		})
+
 	}
 
 	function check_pwd(){
@@ -110,6 +128,7 @@ $(function(){
 		check_pwd();
 		check_cpwd();
 		check_email();
+
 
 		if(error_name == false && error_password == false && error_check_password == false && error_email == false && error_check == false)
 		{
