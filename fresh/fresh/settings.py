@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'fresh.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'freshs',
+        'NAME': 'fresh',
         'HOST': 'localhost',
         'PORT': '3306',
         'USER': 'root',

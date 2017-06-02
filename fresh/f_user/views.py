@@ -84,3 +84,41 @@ def name(request):
 def logout(request):
 	request.session.flush()
 	return render(request, 'f_user/index.html')
+
+def user_order(request):
+	name = request.session['uname']
+	return render(request, 'f_user/user_order.html',{'name':name})
+
+def user_site(request):
+	name = request.session['uname']
+
+	uid = request.session['uid']
+	a = UserInfo.objects.get(id=uid)
+	tel = a.utel
+	get_name = a.get_name
+	zip_code = a.uzip_code
+	addr = a.uaddr
+	if tel !='':
+		return render(request, 'f_user/user_site.html',{'name':name,'tel':tel,'get_name':get_name,'zip_code':zip_code,'addr':addr,'num':1})
+	
+	return render(request, 'f_user/user_site.html',{'name':name,'num':0})
+
+def user_set(request):
+	uid = request.session['uid']
+	a = UserInfo.objects.get(id=uid)
+
+	dict = request.POST
+	get_name = dict.get('get_name')
+	tel = dict.get('tel')
+	zip_code = dict.get('zip_code')
+	addr = dict.get('site_area')
+
+
+	a.utel = tel
+	a.get_name = get_name
+	a.uzip_code = zip_code
+	a.uaddr = addr
+	a.save()
+	
+	return render(request, 'f_user/user_site.html',{'name':name,'tel':tel,'get_name':get_name,'zip_code':zip_code,'addr':addr,'num':1})
+	

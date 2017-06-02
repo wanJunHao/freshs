@@ -9,3 +9,4 @@ class UserInfo(models.Model):
 	uaddr = models.CharField(max_length=100)
 	utel = models.CharField(max_length=11)
 	uzip_code = models.CharField(max_length=6)
+	get_name = models.CharField(max_length=20)

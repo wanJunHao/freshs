@@ -1,0 +1,61 @@
+{%extends 'base_left.html'%}
+
+{%block js%}
+
+<script type="text/javascript">
+	$(function(){
+		$('#site').addClass('active').parent().siblings().children('a').removeClass('active')
+		$('.login_btn').html('欢迎您:{{name}}<span>|</span><a href="/user/logout/">退出</a>')	
+
+		if({{num}}==1){
+			$('.show_info').html(
+		  		'{{addr}}&nbsp;&nbsp;({{zip_code}})&nbsp;&nbsp;{{tel}}&nbsp;&nbsp;&nbsp;{{get_name}}'
+		  	)
+		}
+		else{
+			$('.show_info').html()
+		}
+
+	})
+</script>
+
+{%endblock js%}
+
+{%block content2%}
+
+<div class="right_content clearfix">
+				<h3 class="common_title2">收货地址</h3>
+				<div class="site_con">
+					<dl>
+						<dt>当前地址：</dt>
+						<dd class="show_info"></dd>
+					</dl>					
+				</div>
+				<h3 class="common_title2">编辑地址</h3>
+				<div class="site_con">
+					<form method="post" action="/user/user_set/">
+					{%csrf_token%}
+						<div class="form_group">
+							<label>收件人：</label>
+							<input type="text" name="get_name">
+						</div>
+						<div class="form_group form_group2">
+							<label>详细地址：</label>
+							<textarea class="site_area" name="site_area"></textarea>
+						</div>
+						<div class="form_group">
+							<label>邮编：</label>
+							<input type="text" name="zip_code">
+						</div>
+						<div class="form_group">
+							<label>手机：</label>
+							<input type="text" name="tel">
+						</div>
+
+						<input type="submit" name="" value="提交" class="info_submit">
+					</form>
+				</div>
+		</div>
+	</div>
+
+{%endblock content2%}
