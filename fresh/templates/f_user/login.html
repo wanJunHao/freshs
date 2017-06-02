@@ -6,7 +6,76 @@
 <script type="text/javascript">
 
 $(function(){
+
+	name_error = false 
+	pwd_error = false
+
+	if({{a}}==1){
+		$('#check').removeAttr('checked')
+	}
+	else{
+		$('#check').attr('checked')
+	}
+
+	if({{dat}}==2){
+				$('.user_error').html('名字错误').show()
+				name_error = true
+			}
+
+	if({{dat}}==1){
+				$('.pwd_error').html('密码错误').show()
+				pwd_error = true
+				
+			}
+
+	$('.name_input').blur(function(){
+		checkname()
+	})
+
+	$('.pass_input').blur(function(){
+		checkpwd()
+	})
+
+
+	function checkname(){
+
+		if($('.name_input').val().length==0){
+			$('.user_error').html('用户名不能为空').show()
+			name_error = true 
+		}
+		else{
+			$('.user_error').hide()
+			name_error = false
+		}
+	}
+
+	function checkpwd(){
+
+		if($('.pass_input').val().length==0){
+			$('.pwd_error').html('密码不能为空').show()
+			pwd_error = true
+		}
+
+		else{
+			$('.pwd_error').hide()
+			pwd_error = false
+		}
+	}
+
+	$('#GG').submit(function(){
+
+		$('.name_input').blur()
+		$('.pass_input').blur()
+
+		if(name_error==false && pwd_error==false)
+		{
+			return true 
+		}	
+		else{
+			return false
+		}
 	
+	})
 })
 	
 </script>
@@ -28,13 +97,14 @@ $(function(){
 					<a href="/user/register/">立即注册</a>
 				</div>
 				<div class="form_input">
-					<form>
-						<input type="text" name="username" class="name_input" placeholder="请输入用户名">
+					<form method="post" action="/user/login_handle/" id="GG">
+					{%csrf_token%}
+						<input type="text" name="username" class="name_input" value="{{name}}" placeholder="请输入用户名">
 						<div class="user_error">输入错误</div>
 						<input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
 						<div class="pwd_error">输入错误</div>
 						<div class="more_input clearfix">
-							<input type="checkbox" name="">
+							<input type="checkbox" name="remember" checked="on" value="1" id="check">
 							<label>记住用户名</label>
 							<a href="#">忘记密码</a>
 						</div>

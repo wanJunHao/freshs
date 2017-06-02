@@ -39,37 +39,33 @@ $(function(){
 
 
 	function check_user_name(){
-
-		$.get('/user/register_ajax/', function(data){
-			$.each(data.data,function(i,n){
-				if($('#user_name').val()==n){
-					$('#user_name').next().html('用户名已被注册')
+		var len = $('#user_name').val().length;
+				if(len<5||len>20)
+				{
+					$('#user_name').next().html('请输入5-20个字符的用户名')
 					$('#user_name').next().show();
 					error_name = true;
 				}
-				else{
-					$('#user_name').next().hide();
-					error_name = false;
 		
-
-
-		var len = $('#user_name').val().length;
-		if(len<5||len>20)
-		{
-			$('#user_name').next().html('请输入5-20个字符的用户名')
-			$('#user_name').next().show();
-			error_name = true;
-		}
-		else
-		{
-			$('#user_name').next().hide();
-			error_name = false;
-		}
-			}
-			})
-		})
-
-	}
+				else
+				{
+					$.get('/user/register_ajax/', function(data){
+						$.each(data.data,function(i,n){
+							if($('#user_name').val()==n){
+								$('#user_name').next().html('用户名已被注册')
+								$('#user_name').next().show();
+								error_name = true;
+								return false
+				   	 }
+				   	 else{
+				   	 	$('#user_name').next().hide();
+							error_name = false;
+				   	 }
+		    	 })
+				
+					})
+       }
+   }
 
 	function check_pwd(){
 		var len = $('#pwd').val().length;
