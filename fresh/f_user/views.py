@@ -1,6 +1,7 @@
+#coding=utf-8
 from django.shortcuts import render,redirect
 from models import *
-from django.http import JsonResponse,HttpResponseRedirect
+from django.http import JsonResponse,HttpResponseRedirect,HttpResponse
 # Create your views here.
 
 def register(request):
@@ -49,6 +50,9 @@ def login_handle(request):
 				red.set_cookie('name',name)
 			else:
 				red.set_cookie('name','',max_age=-1)
+
+			request.session['uid'] = users[0].id
+			request.session['uname'] = name
 			return red
 
 		else:
@@ -59,3 +63,24 @@ def login_handle(request):
 def index(request):
 	return render(request,'f_user/index.html')
 
+def user_info(request):
+	
+	uid = request.session.get('uid','hi')
+	if uid == 'hi':
+		print 12341234
+		return redirect('/user/login/')
+	else:
+		users = UserInfo.objects.filter(id=uid)
+		name = users[0].uname
+		tel = users[0].utel
+		addr = users[0].uaddr
+		return render(request,'f_user/user_info.html',{'name':name,'tel':tel,'addr':addr})
+
+
+def name(request):
+	name = request.session['uname']
+	return JsonResponse({'name':name})
+
+def logout(request):
+	request.session.flush()
+	return render(request, 'f_user/index.html')
