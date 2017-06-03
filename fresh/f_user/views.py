@@ -42,7 +42,7 @@ def login_handle(request):
 	if len(users) == 1:
 		if users[0].upwd == pwd:
 
-			url = request.COOKIES.get('url','/user/')
+			url = request.COOKIES.get('url','/')
 			red = HttpResponseRedirect(url)
 			red.set_cookie('url','',max_age=-1)
 
@@ -59,9 +59,6 @@ def login_handle(request):
 			return render(request,'f_user/login.html',{'dat':1})
 	
 	return render(request,'f_user/login.html',{'dat':2})
-
-def index(request):
-	return render(request,'f_user/index.html')
 
 def user_info(request):
 	
@@ -83,7 +80,7 @@ def name(request):
 
 def logout(request):
 	request.session.flush()
-	return render(request, 'f_user/index.html')
+	return redirect('/')
 
 def user_order(request):
 	uid = request.session.get('uid','hi')
@@ -126,5 +123,5 @@ def user_set(request):
 
 
 	
-	return render(request, 'f_user/user_site.html',{'num':1,'name':name,'tel':tel,'addr':addr,'get_name':get_name,'zip_code':zip_code})
+	return render(request, 'f_user/user_site.html',{'num':1,'a':a})
 	
