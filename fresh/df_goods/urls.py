@@ -5,4 +5,5 @@ urlpatterns = [
 	url(r'^$', views.index),
 	url(r'^detail/$', views.detail),
 	url(r'^list(\d+)_(\d*)/$', views.list),
+	url(r'^detail(\d+)/$', views.detail),
 ]
