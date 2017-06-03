@@ -8,12 +8,11 @@
 		$('.login_btn').html('欢迎您:{{name}}<span>|</span><a href="/user/logout/">退出</a>')	
 
 		if({{num}}==1){
-			$('.show_info').html(
-		  		'{{addr}}&nbsp;&nbsp;({{zip_code}})&nbsp;&nbsp;{{tel}}&nbsp;&nbsp;&nbsp;{{get_name}}'
-		  	)
+			/*$('.show_info').html('{{addr}} ({{get_name}}  收)  {{tel}}')*/
+			$('.show_info').html('{{a.uaddr}} ({{a.get_name}}  收)  {{a.utel}}')
 		}
 		else{
-			$('.show_info').html()
+			$('.show_info').html('(收)')
 		}
 
 	})
@@ -37,19 +36,19 @@
 					{%csrf_token%}
 						<div class="form_group">
 							<label>收件人：</label>
-							<input type="text" name="get_name">
+							<input type="text" name="get_name" value="{{a.get_name}}">
 						</div>
 						<div class="form_group form_group2">
 							<label>详细地址：</label>
-							<textarea class="site_area" name="site_area"></textarea>
+							<textarea class="site_area" name="site_area">{{a.uaddr}}</textarea>
 						</div>
 						<div class="form_group">
 							<label>邮编：</label>
-							<input type="text" name="zip_code">
+							<input type="text" name="zip_code" value="{{a.uzip_code}}">
 						</div>
 						<div class="form_group">
 							<label>手机：</label>
-							<input type="text" name="tel">
+							<input type="text" name="tel" value="{{a.utel}}">
 						</div>
 
 						<input type="submit" name="" value="提交" class="info_submit">

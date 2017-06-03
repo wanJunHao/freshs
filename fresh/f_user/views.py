@@ -86,7 +86,10 @@ def logout(request):
 	return render(request, 'f_user/index.html')
 
 def user_order(request):
-	name = request.session['uname']
+	uid = request.session.get('uid','hi')
+	name = request.session.get('uname')
+	if uid == 'hi':
+		return render(request,'f_user/login.html')
 	return render(request, 'f_user/user_order.html',{'name':name})
 
 def user_site(request):
@@ -99,11 +102,12 @@ def user_site(request):
 	zip_code = a.uzip_code
 	addr = a.uaddr
 	if tel !='':
-		return render(request, 'f_user/user_site.html',{'name':name,'tel':tel,'get_name':get_name,'zip_code':zip_code,'addr':addr,'num':1})
+		return render(request, 'f_user/user_site.html',{'num':1,'a':a})
 	
 	return render(request, 'f_user/user_site.html',{'name':name,'num':0})
 
 def user_set(request):
+	name = request.session['uname']
 	uid = request.session['uid']
 	a = UserInfo.objects.get(id=uid)
 
@@ -119,6 +123,8 @@ def user_set(request):
 	a.uzip_code = zip_code
 	a.uaddr = addr
 	a.save()
+
+
 	
-	return render(request, 'f_user/user_site.html',{'name':name,'tel':tel,'get_name':get_name,'zip_code':zip_code,'addr':addr,'num':1})
+	return render(request, 'f_user/user_site.html',{'num':1,'name':name,'tel':tel,'addr':addr,'get_name':get_name,'zip_code':zip_code})
 	
