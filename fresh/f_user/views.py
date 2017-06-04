@@ -1,6 +1,7 @@
 #coding=utf-8
 from django.shortcuts import render,redirect
 from models import *
+from df_goods.models import *
 from django.http import JsonResponse,HttpResponseRedirect,HttpResponse
 # Create your views here.
 
@@ -53,6 +54,7 @@ def login_handle(request):
 
 			request.session['uid'] = users[0].id
 			request.session['uname'] = name
+			# request.session.set_expiry(0)
 			return red
 
 		else:
@@ -64,14 +66,27 @@ def user_info(request):
 	
 	uid = request.session.get('uid','hi')
 	if uid == 'hi':
-		print 12341234
 		return redirect('/user/login/')
 	else:
 		users = UserInfo.objects.filter(id=uid)
 		name = users[0].uname
 		tel = users[0].utel
 		addr = users[0].uaddr
-		return render(request,'f_user/user_info.html',{'name':name,'tel':tel,'addr':addr})
+
+		if request.COOKIES.has_key(name):
+			a = request.COOKIES[name].split('%2C')
+			print a
+			see_list = []
+			for i in a:
+				see_list.append({ 
+				    'see' : GoodsInfo.objects.get(id=int(i))
+				})
+
+			context = {'name':name,'tel':tel,'addr':addr,'see_list':see_list}
+		else:
+			context = {'name':name,'tel':tel,'addr':addr}
+		
+		return render(request,'f_user/user_info.html',context)
 
 
 def name(request):

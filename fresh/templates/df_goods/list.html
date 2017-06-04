@@ -38,7 +38,7 @@
 					<span>|</span>
 					<a href="/user/user_info/">用户中心</a>
 					<span>|</span>
-					<a href="/user/user_order/">我的购物车</a>
+					<a href="/user/cart/">我的购物车</a>
 					<span>|</span>
 					<a href="/user/user_order/">我的订单</a>
 				</div>
@@ -65,7 +65,7 @@
 				<span></span>			
 				<ul class="subnav">
 				{%for i in types%}
-					<li><a href="/goods/list{{i.id}}_1" class="fruit">{{i.ttitle}}</a></li>
+					<li><a href="/goods/list{{i.id}}_1_1" class="fruit">{{i.ttitle}}</a></li>
 					
 				{%endfor%}
 				</ul>
@@ -94,8 +94,8 @@
 					
 					{%for i in new_list%}
 						<li>
-						<a href="#"><img src="/static/{{i.gpic}}"></a>
-						<h4><a href="#">{{i.gtitle}}</a></h4>
+						<a href="/goods/detail{{i.id}}/"><img src="/static/{{i.gpic}}"></a>
+						<h4><a href="/goods/detail{{i.id}}/">{{i.gtitle}}</a></h4>
 						<div class="prize">￥{{i.gprice}}</div>
 					</li>
 					{%endfor%}
@@ -106,9 +106,9 @@
 
 		<div class="r_wrap fr clearfix">
 			<div class="sort_bar">
-				<a href="/goods/list{{pid}}_1/" class="active">默认</a>
-				<a href="/goods/list{{pid}}_1/?a=price" class="price">价格</a>
-				<a href="/goods/list{{pid}}_1/?a=people">人气</a>
+				<a href="/goods/list{{pid}}_1_1/" {%if orderby == '1'%}class="active"{%endif%}>默认</a>
+				<a href="/goods/list{{pid}}_1_2/" {%if orderby == '2'%}class="active"{%endif%}>价格</a>
+				<a href="/goods/list{{pid}}_1_3/" {%if orderby == '3'%}class="active"{%endif%}>人气</a>
 			</div>
 
 			<ul class="goods_type_list clearfix">
@@ -117,8 +117,8 @@
 			{%for i in page%}
 
 			<li>
-					<a href="#"><img src="/static/{{i.gpic}}"></a>
-					<h4><a href="#">{{i.gtitle}}</a></h4>
+					<a href="/goods/detail{{i.id}}/"><img src="/static/{{i.gpic}}"></a>
+					<h4><a href="/goods/detail{{i.id}}/">{{i.gtitle}}</a></h4>
 					<div class="operate">
 						<span class="prize">￥{{i.gprice}}</span>
 						<span class="unit">{{i.gunit}}</span>
@@ -131,19 +131,19 @@
 
 			<div class="pagenation">
 			{%if page.has_previous%}
-			<a href="/goods/list{{pid}}_{{page.number|add:-1}}"><上一页</a>
+			<a href="/goods/list{{pid}}_{{page.number|add:-1}}_{{orderby}}"><上一页</a>
 			{%endif%}
 			{%for i in page.paginator.page_range%}
 
 			{%if i == page.number%}
-				<a href="/goods/list{{pid}}_{{i}}" class="active">{{i}}</a>
+				<a href="/goods/list{{pid}}_{{i}}_{{orderby}}" class="active">{{i}}</a>
 			{%else%}
-			<a href="/goods/list{{pid}}_{{i}}">{{i}}</a>
+			<a href="/goods/list{{pid}}_{{i}}_{{orderby}}">{{i}}</a>
 			{%endif%}
 
 			{%endfor%}
 				{%if page.has_next%}
-				<a href="/goods/list{{pid}}_{{page.number|add:1}}">下一页></a>
+				<a href="/goods/list{{pid}}_{{page.number|add:1}}_{{orderby}}">下一页></a>
 				{%endif%}
 			</div>
 		</div>

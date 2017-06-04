@@ -3,18 +3,51 @@
 {%block title%}商品详情{%endblock title%}
 
 {%block js%}
-
+<script type="text/javascript" src='/static/js/jquery.cookie.js'></script>
 <script type="text/javascript">
 	$(function(){
 
 		$.get('/user/name/',function(data){
-			if(data.name.length!=0){
+			if(data.name.length!=null){
 				$('.login_btn').html('欢迎您:'+data.name+'<span>|</span><a href="/user/logout/">退出</a>')
+				if($.cookie(data.name)==null){
+					$.cookie(data.name,{{good.id}},{expires:7,path:'/'})
+				}
+				else{
+					a = $.cookie(data.name).split(',')
+					/*alert(jQuery.type(a))*/
+					/*去重复的*/
+					for(var i=0;i<a.length;i++){
+						if(a[i]=={{good.id}}){							
+							a.splice(i,1)
+						}
+					}
+					/*判断是否超过五个  只保存五条信息*/
+					if(a.length<5){
+						a.unshift({{good.id}})
+						$.cookie(data.name,a.join(','),{expires:7,path:'/'})
+					}
+					else{
+						a.pop()
+						a.unshift({{good.id}})
+						$.cookie(data.name,a.join(','),{expires:7,path:'/'})
+					}
+				}
 			}
 		})
+		
+		$('.add').click(function(){
+			$('.num_show').val(parseInt($('.num_show').val())+1)
+			$('.price_all').html(({{good.gprice}}*$('.num_show').val()).toFixed(2)+'元')
+		})
 
-
-
+		$('.minus').click(function(){
+			if($('.num_show').val()==1){
+				return
+			}
+			$('.num_show').val(parseInt($('.num_show').val())-1)
+			$('.price_all').html(({{good.gprice}}*$('.num_show').val()).toFixed(2)+'元')
+		})
 	})
 </script>
 
@@ -38,7 +71,7 @@
 					<span>|</span>
 					<a href="/user/user_info/">用户中心</a>
 					<span>|</span>
-					<a href="cart.html">我的购物车</a>
+					<a href="/goods/cart/">我的购物车</a>
 					<span>|</span>
 					<a href="/user/user_order/">我的订单</a>
 				</div>
@@ -108,7 +141,7 @@
 					<a href="javascript:;" class="minus fr">-</a>	
 				</div> 
 			</div>
-			<div class="total">总价：<em>16.80元</em></div>
+			<div class="total">总价：<em class="price_all">{{good.gprice}}元</em></div>
 			<div class="operate_btn">
 				<a href="javascript:;" class="buy_btn">立即购买</a>
 				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>				
@@ -130,16 +163,7 @@
 					</li>
 
 				{%endfor%}
-					<!-- <li>
-						<a href="#"><img src="/static/images/goods/goods001.jpg"></a>
-						<h4><a href="#">进口柠檬</a></h4>
-						<div class="prize">￥3.90</div>
-					</li>
-					<li>
-						<a href="#"><img src="/static/images/goods/goods002.jpg"></a>
-						<h4><a href="#">玫瑰香葡萄</a></h4>
-						<div class="prize">￥16.80</div>
-					</li> -->
+					
 				</ul>
 			</div>
 		</div>
