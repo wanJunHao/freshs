@@ -22,52 +22,18 @@
 
 {%block content%}
 
-<div class="header_con">
-		<div class="header">
-			<div class="welcome fl">欢迎来到天天生鲜!</div>
-			<div class="fr">
-				<div class="login_info fl">
-					欢迎您：<em>张 山</em>
-				</div>
-				<div class="login_btn fl">
-					<a href="/user/login/">登录</a>
-					<span>|</span>
-					<a href="/user/register/">注册</a>
-				</div>
-				<div class="user_link fl">
-					<span>|</span>
-					<a href="/user/user_info/">用户中心</a>
-					<span>|</span>
-					<a href="/user/cart/">我的购物车</a>
-					<span>|</span>
-					<a href="/user/user_order/">我的订单</a>
-				</div>
-			</div>
-		</div>		
-	</div>
-
-	<div class="search_bar clearfix">
-		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
-		<div class="search_con fl">
-			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
-			<input type="button" class="input_btn fr" name="" value="搜索">
-		</div>
-		<div class="guest_cart fr">
-			<a href="#" class="cart_name fl">我的购物车</a>
-			<div class="goods_count fl">1</div>
-		</div>
-	</div>
-
 	<div class="navbar_con">
 		<div class="navbar clearfix">
 			<div class="subnav_con fl">
 				<h1>全部商品分类</h1>	
 				<span></span>			
 				<ul class="subnav">
-				{%for i in types%}
-					<li><a href="/goods/list{{i.id}}_1_1" class="fruit">{{i.ttitle}}</a></li>
-					
-				{%endfor%}
+				<li><a href="/goods/list1_1_1" class="fruit">新鲜水果</a></li>
+					<li><a href="/goods/list2_1_1" class="seafood">海鲜水产</a></li>
+					<li><a href="/goods/list3_1_1" class="meet">猪牛羊肉</a></li>
+					<li><a href="/goods/list4_1_1" class="egg">禽类蛋品</a></li>
+					<li><a href="/goods/list5_1_1" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="/goods/list6_1_1" class="ice">速冻食品</a></li>
 				</ul>
 			</div>
 			<ul class="navlist fl">
@@ -122,7 +88,7 @@
 					<div class="operate">
 						<span class="prize">￥{{i.gprice}}</span>
 						<span class="unit">{{i.gunit}}</span>
-						<a href="#" class="add_goods" title="加入购物车"></a>
+						<a href="/goods/add{{i.id}}_1/" class="add_goods" title="加入购物车"></a>
 					</div>
 				</li>
 			{%endfor%}

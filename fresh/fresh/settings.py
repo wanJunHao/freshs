@@ -39,7 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'f_user',
     'df_goods',
-    'tinymce'
+    'tinymce',
+    'haystack',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -122,3 +123,13 @@ TINYMCE_DEFAULT_CONFIG = {
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_COOKIE_DOMAIN = 'localhost'
 # SESSION_COOKIE_NAME = 'sessionid'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    }
+}
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 12

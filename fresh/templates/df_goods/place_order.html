@@ -9,6 +9,19 @@
 
 		$('.login_btn').html('欢迎您:{{name}}<span>|</span><a href="/user/logout/">退出</a>')
 
+
+		var count = 0
+		$('.goods_list_td').each(function(){
+			p = $(this).children().eq(4).children().text()
+			n = $(this).children().eq(5).text()
+			$(this).children().eq(6).children().html(parseFloat(p*n).toFixed(2))
+			count += p*n
+		})
+		$('.all_n').text($('.goods_list_td').length)
+		$('.all_money').text(parseFloat(count).toFixed(2))
+		$('.way_money').text(parseFloat($('.goods_list_td').length*5).toFixed(2))
+		$('.true_money').text(parseFloat(parseFloat($('.all_money').text())+parseInt($('.way_money').text())).toFixed(2))
+
 	})
 </script>
 
@@ -16,47 +29,16 @@
 
 {%block content%}
 
-<div class="header_con">
-		<div class="header">
-			<div class="welcome fl">欢迎来到天天生鲜!</div>
-			<div class="fr">
-				<div class="login_info fl">
-					欢迎您：<em>张 山</em>
-				</div>
-				<div class="login_btn fl">
-					<!-- <a href="/user/login/">登录</a>
-					<span>|</span>
-					<a href="/user/register/">注册</a> -->
-				</div>
-				<div class="user_link fl">
-					<span>|</span>
-					<a href="/user/user_info/">用户中心</a>
-					<span>|</span>
-					<a href="/goods/cart/">我的购物车</a>
-					<span>|</span>
-					<a href="/user/user_order/">我的订单</a>
-				</div>
-			</div>
-		</div>		
-	</div>
 
-	<div class="search_bar clearfix">
-		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
-		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;提交订单</div>
-		<div class="search_con fr">
-			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
-			<input type="button" class="input_btn fr" name="" value="搜索">
-		</div>		
-	</div>
 	
 	<h3 class="common_title">确认收货地址</h3>
 
 	<div class="common_list_con clearfix">
 		<dl>
 			<dt>寄送到：</dt>
-			<dd><input type="radio" name="" checked="">北京市 海淀区 东北旺西路8号中关村软件园 （李思 收） 182****7528</dd>
+			<dd><input type="radio" name="" checked="">{{user.uaddr}}（{{user.get_name}})收  {{user.utel}}</dd>
 		</dl>
-		<a href="user_center_site.html" class="edit_site">编辑收货地址</a>
+		<a href="/user/user_site/" class="edit_site">编辑收货地址</a>
 
 	</div>
 	
@@ -84,33 +66,28 @@
 			<li class="col04">数量</li>
 			<li class="col05">小计</li>		
 		</ul>
+		{%for i in list1%}
+		
 		<ul class="goods_list_td clearfix">
-			<li class="col01">1</li>			
-			<li class="col02"><img src="/static/images/goods/goods012.jpg"></li>
-			<li class="col03">奇异果</li>
-			<li class="col04">500g</li>
-			<li class="col05">25.80元</li>
-			<li class="col06">1</li>
-			<li class="col07">25.80元</li>	
+			<li class="col01">{{forloop.counter}}</li>			
+			<li class="col02"><img src="/static/{{i.good.gpic}}"></li>
+			<li class="col03">{{i.good.gtitle|truncatechars:15}}</li>
+			<li class="col04">{{i.good.gunit}}</li>
+			<li class="col05"><em>{{i.good.gprice}}</em>元</li>
+			<li class="col06">{{i.gs}}</li>
+			<li class="col07"><em></em>元</li>	
 		</ul>
-		<ul class="goods_list_td clearfix">
-			<li class="col01">2</li>			
-			<li class="col02"><img src="/static/images/goods/goods003.jpg"></li>
-			<li class="col03">大兴大棚草莓</li>
-			<li class="col04">500g</li>
-			<li class="col05">16.80元</li>
-			<li class="col06">1</li>
-			<li class="col07">16.80元</li>	
-		</ul>
+		
+		{%endfor%}
 	</div>
 
 	<h3 class="common_title">总金额结算</h3>
 
 	<div class="common_list_con clearfix">
 		<div class="settle_con">
-			<div class="total_goods_count">共<em>2</em>件商品，总金额<b>42.60元</b></div>
-			<div class="transit">运费：<b>10元</b></div>
-			<div class="total_pay">实付款：<b>52.60元</b></div>
+			<div class="total_goods_count">共<em class="all_n"></em>件商品，总金额<b><em class="all_money"></em>元</b></div>
+			<div class="transit">运费：<b><em class="way_money"></em>元</b></div>
+			<div class="total_pay">实付款：<b><em class="true_money"></em>元</b></div>
 		</div>
 	</div>
 

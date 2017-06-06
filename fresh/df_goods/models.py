@@ -22,3 +22,10 @@ class GoodsInfo(models.Model):
 	gtype = models.ForeignKey('TypeInfo')
 	def __str__(self):
 		return self.gtitle.encode('utf-8')
+
+class CartInfo(models.Model):
+	uid = models.IntegerField()
+	gid = models.IntegerField()
+	gs = models.IntegerField()
+	class Meta:
+		db_table = 'cartinfo'

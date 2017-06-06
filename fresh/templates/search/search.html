@@ -1,0 +1,57 @@
+{%extends 'base.html'%}
+
+{%block title%}全文检索--结果页{%endblock title%}
+
+{%block content%}
+
+
+			<h1>搜索&nbsp;<b>{{query}}</b>&nbsp;结果如下：</h1>
+
+			<ul class="goods_type_list clearfix">
+				
+
+			{%for item in page%}
+
+			<li>
+					<a href="/goods/detail{{item.object.id}}/"><img src="/static/{{item.object.gpic}}"></a>
+					<h4><a href="/goods/detail{{item.object.id}}/">{{item.object.gtitle}}</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{item.object.gprice}}</span>
+						<span class="unit">{{item.object.gunit}}</span>
+						<a href="/goods/add{{item.object.id}}_1/" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+								{%empty%}
+    <li>啥也没找到</li>
+			{%endfor%}
+
+
+
+
+			</ul>
+
+			<div class="pagenation">
+
+			{%if page.has_previous%}
+			<a href="?q={{query}}&amp;page={{page.number|add:-1}}"><上一页</a>
+			{%endif%}
+
+
+			{%for pindex in page.paginator.page_range%}
+
+			{%if pindex == page.number%}
+				<a href="javascript:;" class="active">{{pindex}}</a>
+			{%else%}
+			<a href="?page=pindex">{{pindex}}</a>
+			{%endif%}
+
+			{%endfor%}
+			{%if page.has_next%}
+				<a href="?q={{query}}&amp;page={{page.number|add:1}}">下一页></a>
+				{%endif%}
+				
+			</div>
+
+	
+
+{%endblock content%}
