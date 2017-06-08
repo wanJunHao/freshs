@@ -1,8 +1,10 @@
 #coding=utf-8
 from django.shortcuts import render,redirect
 from models import *
-from df_goods.models import *
+from df_goods.models import GoodsInfo,CartInfo
 from django.http import JsonResponse,HttpResponseRedirect,HttpResponse
+from django.core.paginator import Paginator
+from df_order.models import OrderInfo,OrderDetailInfo
 # Create your views here.
 
 def register(request):
@@ -82,9 +84,9 @@ def user_info(request):
 				    'see' : GoodsInfo.objects.get(id=int(i))
 				})
 
-			context = {'name':name,'tel':tel,'addr':addr,'see_list':see_list}
+			context = {'name':name,'tel':tel,'addr':addr,'see_list':see_list,'page_num':2}
 		else:
-			context = {'name':name,'tel':tel,'addr':addr}
+			context = {'name':name,'tel':tel,'addr':addr,'page_num':2}
 		
 		return render(request,'f_user/user_info.html',context)
 
@@ -97,12 +99,22 @@ def logout(request):
 	request.session.flush()
 	return redirect('/')
 
-def user_order(request):
+def user_order(request,index):
+
 	uid = request.session.get('uid','hi')
-	name = request.session.get('uname')
 	if uid == 'hi':
-		return render(request,'f_user/login.html')
-	return render(request, 'f_user/user_order.html',{'name':name})
+		return redirect('/user/login/')
+	else:
+		name = request.session.get('uname')
+		list1 = OrderInfo.objects.filter(user_id=uid)[::-1]
+
+		p = Paginator(list1,2)
+		page = p.page(index)
+		
+
+	context = {'name':name,'page':page,'page_num':2}
+
+	return render(request, 'f_user/user_order.html',context)
 
 def user_site(request):
 	name = request.session['uname']
@@ -114,9 +126,9 @@ def user_site(request):
 	zip_code = a.uzip_code
 	addr = a.uaddr
 	if tel !='':
-		return render(request, 'f_user/user_site.html',{'num':1,'a':a})
+		return render(request, 'f_user/user_site.html',{'num':1,'a':a,'page_num':2,'name':name})
 	
-	return render(request, 'f_user/user_site.html',{'name':name,'num':0})
+	return render(request, 'f_user/user_site.html',{'name':name,'num':0,'page_num':2})
 
 def user_set(request):
 	name = request.session['uname']
@@ -138,5 +150,5 @@ def user_set(request):
 
 
 	
-	return render(request, 'f_user/user_site.html',{'num':1,'a':a})
+	return render(request, 'f_user/user_site.html',{'num':1,'a':a,'page_num':2,'name':name})
 	

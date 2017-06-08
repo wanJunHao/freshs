@@ -80,10 +80,8 @@ def cart(request):
 				'id':i.id
 		})
 	
-	context = {'ggg':ggg,'name':name,'all':len(ggg)}		
+	context = {'ggg':ggg,'name':name,'page_num':2}		
 	return render(request, 'df_goods/cart.html', context)
-
-
 
 def add(request,gid,count):
 	uid = request.session.get('uid','hi')
@@ -106,52 +104,26 @@ def add(request,gid,count):
 		else:
 			return redirect('/goods/cart/')
 
-def jia(request):
-
-	uid = request.session.get('uid','hi')
-	list1 = CartInfo.objects.filter(uid=uid).filter(gid=gid)
-	list1[0].gs += 1
-	list1[0].save()
-
 def place_order(request):
-	
-	uid = request.session.get('uid','hi')
-	
-	if uid == 'hi':
-		return redirect('/user/login/')
-	else:
-		name = request.session['uname']
 
-		user = UserInfo.objects.get(id=uid)
-		list1 = CartInfo.objects.filter(uid=uid)
-		list2 = []
-		for i in list1:
-			list2.append({
-			             'good':GoodsInfo.objects.get(id=i.gid),
-			             'gs':i.gs
+	uid = request.session.get('uid','hi')
+	name = request.session['uname']
+	user = UserInfo.objects.get(id=uid)
+		
+	cids = request.GET.getlist('cid')
+	uid = request.session.get('uid')
+	list1 = []
+	for i in cids:
+		list2 = CartInfo.objects.all()
+		for j in list2:
+			if j.id == int(i):
+				list1.append({
+				'good':GoodsInfo.objects.get(id=CartInfo.objects.get(id=i).gid),
+				'gs':CartInfo.objects.get(id=i).gs,
+				'id':i
 			})
-		context = {'name':name,'user':user,'list1':list2}
-
-	return render(request, 'df_goods/place_order.html', context)
-
-def now_buy(request,pid):
-
-	uid = request.session.get('uid','hi')
-	
-	if uid == 'hi':
-		return redirect('/user/login/')
-	else:
-		name = request.session['uname']
-		user = UserInfo.objects.get(id=uid)
-		list2 = [{
-			'good':GoodsInfo.objects.get(id=pid),
-			'gs':request.COOKIES['number']
-		}]
-
-
-		context = {'name':name,'user':user,'list1':list2}
-
-	return render(request, 'df_goods/place_order.html', context)
+	context = {'name':name,'user':user,'list':list1,'page_num':2}
+	return render(request,'df_goods/place_order.html',context)
 
 # from haystack.views import SearchView
 # class MySearchView(SearchView):
@@ -159,3 +131,46 @@ def now_buy(request,pid):
 #         extra = super(FacetedSearchView, self).extra_context()
 #         extra['title'] = self.request.GET.get('q')
 #         return extra
+
+def plus(request):
+	
+	gid = request.GET.get('gid')
+	uid = request.session.get('uid')
+	list1 = CartInfo.objects.filter(uid=uid).filter(gid=gid)
+	a = list1[0]
+	if a.gs < 100:
+		a.gs += 1
+		a.save()
+
+def reduce(request):
+	
+	gid = request.GET.get('gid')
+	uid = request.session.get('uid')
+	list1 = CartInfo.objects.filter(uid=uid).filter(gid=gid)
+	a = list1[0]
+	if a.gs > 1:
+		a.gs -= 1
+		a.save()
+
+def delete(request):
+
+	cid = request.GET.get('cid')
+	cartinfo = CartInfo.objects.get(id=cid)
+	cartinfo.delete()
+
+	return JsonResponse({'areuok':'ok'})
+
+# def pay_now(request,gid,gs):
+# 	uid = request.session.get('uid','hi')
+# 	if uid == 'hi':
+# 		return redirect('/user/login/')
+# 	else:
+# 		name = request.session['uname']
+# 		user = UserInfo.objects.get(id=uid)
+		
+# 		list1 = [{
+# 			'good':GoodsInfo.objects.get(id=gid),
+# 			'gs':gs
+# 				}]
+# 		context = {'name':name,'user':user,'list':list1,'page_num':2}
+# 		return render(request, 'df_goods/place_order.html', context)

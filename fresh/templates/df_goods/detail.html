@@ -43,6 +43,7 @@
 		$('.add').click(function(){
 			$('.num_show').val(parseInt($('.num_show').val())+1)
 			$('.price_all').html(({{good.gprice}}*$('.num_show').val()).toFixed(2)+'元')
+			$('.buy_btn').prop('href','/goods/pay_now{{good.id}}_'+$('.num_show').val()+'/')
 		})
 
 		$('.minus').click(function(){
@@ -51,6 +52,7 @@
 			}
 			$('.num_show').val(parseInt($('.num_show').val())-1)
 			$('.price_all').html(({{good.gprice}}*$('.num_show').val()).toFixed(2)+'元')
+			$('.buy_btn').prop('href','/goods/pay_now{{good.id}}_'+$('.num_show').val()+'/')
 		})
 
 		$('.add_cart').click(function(){
@@ -58,10 +60,9 @@
 				$('.goods_count').html(data.num)
 			})
 		})
+		$('.buy_btn').prop('href','/goods/pay_now{{good.id}}_'+$('.num_show').val()+'/')
 
-		$('.buy_btn').click(function(){
-			$.cookie('number',$('.num_show').val(),{expires:7,path:'/'})
-		})
+	
 	})
 </script>
 
@@ -117,14 +118,14 @@
 			<div class="goods_num clearfix">
 				<div class="num_name fl">数 量：</div>
 				<div class="num_add fl">
-					<input type="text" class="num_show fl" value="1" readonly="readonly">
+					<input type="text" class="num_show fl" value="1" readonly="readonly" id="{{good.id}}">
 					<a href="javascript:;" class="add fr">+</a>
 					<a href="javascript:;" class="minus fr">-</a>	
 				</div> 
 			</div>
 			<div class="total">总价：<em class="price_all">{{good.gprice}}元</em></div>
 			<div class="operate_btn">
-				<a href="/goods/place_order{{good.id}}/" class="buy_btn">立即购买</a>
+				<a href="/goods/pay_now{{good.id}}_/" class="buy_btn">立即购买</a>
 				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>				
 			</div>
 		</div>

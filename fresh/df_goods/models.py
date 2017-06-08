@@ -29,3 +29,11 @@ class CartInfo(models.Model):
 	gs = models.IntegerField()
 	class Meta:
 		db_table = 'cartinfo'
+
+class OrderInfo(models.Model):
+	uid = models.IntegerField()
+	gid = models.IntegerField()
+	gs = models.IntegerField()
+	ispay = models.BooleanField(default=False)
+	class Meta:
+		db_table = 'orderinfo'

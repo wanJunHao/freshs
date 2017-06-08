@@ -7,8 +7,11 @@ urlpatterns = [
 	url(r'^detail(\d+)/$', views.detail),
 	url(r'^add(\d+)_(\d+)/$', views.add),
 	url(r'^cart/$', views.cart),
-	url(r'^jia/$', views.jia),
 	url(r'^place_order/$', views.place_order),
-	url(r'^place_order(\d+)/$', views.now_buy),
 	# url(r'^goods/search/$', views.MySearchView),
+	url(r'^plus/$', views.plus),
+	url(r'^reduce/$', views.reduce),
+	url(r'^delete/$', views.delete),
+	# url(r'^pay_now(\d+)_(\d+)/$', views.pay_now),
+
 ]
