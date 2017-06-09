@@ -40,7 +40,6 @@ def login_handle(request):
 	pwd = dict.get('pwd')
 	rem = dict.get('remember')
 	users = UserInfo.objects.filter(uname=name)
-	print rem 
 	
 	if len(users) == 1:
 		if users[0].upwd == pwd:
@@ -77,7 +76,6 @@ def user_info(request):
 
 		if request.COOKIES.has_key(name):
 			a = request.COOKIES[name].split('%2C')
-			print a
 			see_list = []
 			for i in a:
 				see_list.append({ 
@@ -151,4 +149,11 @@ def user_set(request):
 
 	
 	return render(request, 'f_user/user_site.html',{'num':1,'a':a,'page_num':2,'name':name})
-	
+
+def car_data(request):
+	uid = request.session.get('uid','hi')
+	if uid == 'hi':
+		return JsonResponse({'count':'哼'})
+	else:
+		list1 = CartInfo.objects.filter(uid=uid)
+		return JsonResponse({'count':len(list1)})

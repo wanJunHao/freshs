@@ -22,7 +22,7 @@ def index(request):
 		          'new_list':i.goodsinfo_set.order_by('-id')[0:4]
 		})
 
-	context = {'list':list1,'count':count,'page_num':1}
+	context = {'list':list1,'count':count}
 	return render(request,'df_goods/index.html',context)
 
 	
@@ -48,7 +48,7 @@ def list(request,pid,yid,orderby):
 	new_list = GoodsInfo.objects.filter(gtype_id=pid).order_by('-id')[0:2]
 	p = Paginator(glist,10)
 	page = p.page(yid)
-	context = {'page':page,'pid':pid,'types':types,'title':ltitle,'new_list':new_list,'orderby':orderby,'count':count,'page_num':1}
+	context = {'page':page,'pid':pid,'types':types,'title':ltitle,'new_list':new_list,'orderby':orderby,'count':count}
 	return render(request,'df_goods/list.html',context)
 
 def detail(request,pid):
@@ -61,7 +61,7 @@ def detail(request,pid):
 	good = GoodsInfo.objects.get(id=pid)
 	new_list = GoodsInfo.objects.filter(gtype_id=good.gtype.id).order_by('-id')[0:2]
 
-	context = {'good':good,'list':new_list,'count':count,'page_num':1}
+	context = {'good':good,'list':new_list,'count':count}
 	return render(request,'df_goods/detail.html',context)
 
 def cart(request):
@@ -106,12 +106,10 @@ def add(request,gid,count):
 
 def place_order(request):
 
-	uid = request.session.get('uid','hi')
 	name = request.session['uname']
-	user = UserInfo.objects.get(id=uid)
-		
 	cids = request.GET.getlist('cid')
 	uid = request.session.get('uid')
+	user = UserInfo.objects.get(id=uid)
 	list1 = []
 	for i in cids:
 		list2 = CartInfo.objects.all()
@@ -125,7 +123,7 @@ def place_order(request):
 	context = {'name':name,'user':user,'list':list1,'page_num':2}
 	return render(request,'df_goods/place_order.html',context)
 
-# from haystack.views import SearchView
+from haystack.views import SearchView
 # class MySearchView(SearchView):
 #     def extra_context(self):
 #         extra = super(FacetedSearchView, self).extra_context()

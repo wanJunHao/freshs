@@ -41,10 +41,10 @@ def order(request):
 				order_detail.goods = GoodsInfo.objects.get(id=cart.gid)
 				order_detail.price = GoodsInfo.objects.get(id=cart.gid).gprice
 				order_detail.count = cart.gs				
-					
 				order_detail.save()				
 				ototal += order_detail.price*order_detail.count
 				cart.delete()
+		
 		order.ototal = ototal
 		order.save()
 
